@@ -3,6 +3,12 @@
 
 # Log file
 *.log
+log/
+
+# Eclipse Project Files
+.settings/
+.project
+.classpath
 
 # BlueJ files
 *.ctxt
@@ -11,6 +17,7 @@
 .mtj.tmp/
 
 # Package Files #
+target/
 *.jar
 *.war
 *.ear
