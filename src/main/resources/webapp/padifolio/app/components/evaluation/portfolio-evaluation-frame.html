@@ -1,0 +1,23 @@
+<div ng-if="$ctrl.portfolio.id">
+
+	<h3>{{$ctrl.portfolio.name}}&nbsp;</h3>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<highchart id="marketValue" config="$ctrl.marketValueChartConfig()"></highchart>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<highchart id="performance" config="$ctrl.performanceChartConfig()"></highchart>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<highchart id="performanceAggr" config="$ctrl.aggrPerformanceChartConfig()"></highchart>
+		</div>
+	</div>
+
+</div>

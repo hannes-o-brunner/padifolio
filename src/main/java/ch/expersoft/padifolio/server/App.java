@@ -27,7 +27,7 @@ public class App {
 	private static final String REST_PROTOCOL = "http";
 	private static final String REST_HOST = "0.0.0.0";
 	private static final int REST_PORT = 9001;
-	private static final String REST_PATH = "padifolio";
+	private static final String REST_PATH = "api";
 
 	public static void main(String[] args) throws SQLException, IOException {
 
@@ -47,8 +47,8 @@ public class App {
 		HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, rc);
 
 		LOGGER.info("Adding static content handler ...");
-		server.createContext("/padifolio/app", new StaticContentHandler());
-		server.createContext("/padifolio/lib", new StaticContentHandler());
+		server.createContext("/", new StaticContentHandler("/webapp/padifolio"));
+		server.createContext("/padifolio", new StaticContentHandler("/webapp"));
 
 		LOGGER.info("Happily serving everafter ...");
 

@@ -1,7 +1,6 @@
 package ch.expersoft.padifolio.server.evaluation;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.jvnet.hk2.annotations.Contract;
 
@@ -12,6 +11,6 @@ public interface EvaluationApi {
 
 	LocalDate toDate(String date);
 
-	List<EvaluationDto> getEvaluation(int portfolioId, String refCurrency, LocalDate from, LocalDate to);
+	EvaluationDto getEvaluation(int portfolioId, String refCurrency, LocalDate from, LocalDate to);
 
 }

@@ -1,7 +1,5 @@
 package ch.expersoft.padifolio.rest.evaluation;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -29,7 +27,7 @@ public class EvaluationService extends AbstractService {
 	@Path("/{portfolioId}/{refCurrency}/{fromDate}/{toDate}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<EvaluationDto> getEvaluation(@PathParam("portfolioId") int portfolioId, @PathParam("refCurrency") String refCurrency, @PathParam("fromDate") String fromDate,
+	public EvaluationDto getEvaluation(@PathParam("portfolioId") int portfolioId, @PathParam("refCurrency") String refCurrency, @PathParam("fromDate") String fromDate,
 			@PathParam("toDate") String toDate) {
 		try {
 			return api.getEvaluation(portfolioId, refCurrency, api.toDate(fromDate), api.toDate(toDate));

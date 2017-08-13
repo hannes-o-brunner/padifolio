@@ -16,11 +16,17 @@ public class StaticContentHandler implements HttpHandler {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(StaticContentHandler.class);
 
+	private String pathPrefix;
+
+	public StaticContentHandler(String prefix) {
+		this.pathPrefix = prefix;
+	}
+
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 
-		String path = t.getRequestURI().getPath().substring("/padifolio".length());
-		LOGGER.trace("Looking for: " + path);
+		String path = pathPrefix + t.getRequestURI().getPath();
+		LOGGER.info("Looking for: " + path);
 		InputStream inputStream = getClass().getResourceAsStream(path);
 
 		if (inputStream == null) {

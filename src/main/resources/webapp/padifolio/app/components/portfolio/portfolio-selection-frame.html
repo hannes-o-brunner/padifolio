@@ -1,0 +1,14 @@
+<div>
+
+	<div class="row">
+		<div class="media-list">
+			<portfolio-card
+				ng-repeat="p in $ctrl.getPortfolioList()"
+				portfolio="p"
+				on-select-portfolio="$ctrl.selectPortfolio(portfolio)"
+			>
+			</portfolio-card>
+		</div>
+	</div>
+
+</div>

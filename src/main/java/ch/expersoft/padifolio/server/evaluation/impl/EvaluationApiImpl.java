@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import ch.expersoft.padifolio.server.ConnectionProvider;
 import ch.expersoft.padifolio.server.evaluation.EvaluationApi;
 import ch.expersoft.padifolio.server.evaluation.EvaluationDto;
+import ch.expersoft.padifolio.server.evaluation.EvaluationPeriodDto;
 
 @Service
 public class EvaluationApiImpl implements EvaluationApi {
@@ -65,9 +65,14 @@ public class EvaluationApiImpl implements EvaluationApi {
 	}
 
 	@Override
-	public List<EvaluationDto> getEvaluation(int portfolioId, String refCurrency, LocalDate fromDate, LocalDate toDate) {
+	public EvaluationDto getEvaluation(int portfolioId, String refCurrency, LocalDate fromDate, LocalDate toDate) {
 
-		List<EvaluationDto> evalList = new ArrayList<EvaluationDto>();
+		EvaluationDto eval = new EvaluationDto();
+		eval.portfolioId = portfolioId;
+		eval.refCurrency = refCurrency;
+		eval.fromDate = fromDate(fromDate);
+		eval.toDate = fromDate(toDate);
+		eval.periods = new ArrayList<EvaluationPeriodDto>();
 
 		try {
 			CallableStatement callStmt = cp.getConnection().prepareCall(CALC_EXEC_STMT);
@@ -88,16 +93,16 @@ public class EvaluationApiImpl implements EvaluationApi {
 			selStmt.setString(2, fromDate(toDate));
 			resultSet = selStmt.executeQuery();
 			while (resultSet.next()) {
-				EvaluationDto eval = new EvaluationDto();
-				eval.evalDate = resultSet.getString(1);
-				eval.dateType = resultSet.getInt(2);
-				eval.twrStd = resultSet.getBigDecimal(3);
-				eval.twrSpan = resultSet.getBigDecimal(4);
-				eval.twrPrevDate = resultSet.getBigDecimal(5);
-				eval.marketValue = resultSet.getBigDecimal(6);
-				eval.flowPrevDate = resultSet.getBigDecimal(7);
-				eval.profitPrevDate = resultSet.getBigDecimal(8);
-				evalList.add(eval);
+				EvaluationPeriodDto period = new EvaluationPeriodDto();
+				period.evalDate = resultSet.getString(1);
+				period.dateType = resultSet.getInt(2);
+				period.twrStd = resultSet.getBigDecimal(3);
+				period.twrSpan = resultSet.getBigDecimal(4);
+				period.twrPrevDate = resultSet.getBigDecimal(5);
+				period.marketValue = resultSet.getBigDecimal(6);
+				period.flowPrevDate = resultSet.getBigDecimal(7);
+				period.profitPrevDate = resultSet.getBigDecimal(8);
+				eval.periods.add(period);
 			}
 		} catch (SQLException e) {
 			LOGGER.error("Crashed on SQL", e);
@@ -111,7 +116,7 @@ public class EvaluationApiImpl implements EvaluationApi {
 			}
 		}
 
-		return evalList;
+		return eval;
 
 	}
 

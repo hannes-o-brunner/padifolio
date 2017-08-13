@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Padifolio PoC</title>
+
+	<!-- ANGULAR -->
+	<script src="/padifolio/assets/lib/jquery-3.2.1.min.js"></script>
+	<script>$.noConflict();</script>
+	<script src="/padifolio/assets/lib/angular-1.6.4/angular.min.js"></script>
+	<script src="/padifolio/assets/lib/angular-1.6.4/angular-sanitize.min.js"></script>
+	<script src="/padifolio/assets/lib/angular-ui-router.js"></script>
+
+	<!-- BOOTSTRAP -->
+	<script src="/padifolio/assets/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- HIGHCHART -->
+	<script src="/padifolio/assets/lib/highcharts/highcharts.src.js"></script>
+	<script src="/padifolio/assets/lib/highcharts/highcharts-ng.min.js"></script>
+	<script src="/padifolio/assets/lib/highcharts/dark-unica.js"></script>
+
+	<!-- SERVICES -->
+	<script src="/padifolio/app/services/app/app.js"></script>
+	<script src="/padifolio/app/services/app/app-service.js"></script>
+	<script src="/padifolio/app/services/session/session.js"></script>
+	<script src="/padifolio/app/services/session/session-service.js"></script>
+	<script src="/padifolio/app/services/portfolio/portfolio.js"></script>
+	<script src="/padifolio/app/services/portfolio/portfolio-service.js"></script>
+	<script src="/padifolio/app/services/evaluation/evaluation.js"></script>
+	<script src="/padifolio/app/services/evaluation/evaluation-service.js"></script>
+
+	<!-- UI -->
+	<script src="/padifolio/app/components/app/app-controller.js"></script>
+	<script src="/padifolio/app/components/portfolio/portfolio-view-component.js"></script>
+	<script src="/padifolio/app/components/portfolio/portfolio-selection-component.js"></script>
+	<script src="/padifolio/app/components/portfolio/portfolio-card-component.js"></script>
+	<script src="/padifolio/app/components/evaluation/portfolio-evaluation-component.js"></script>
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/padifolio/assets/lib/bootstrap-3.3.7/css/bootstrap.darkly.min.css">
+	<link rel="stylesheet" href="/padifolio/assets/css/app.css">
+
+</head>
+
+<body ng-app="app" ng-controller="appController as app">
+
+	<div class="spinnerBg" ng-show="app.appService.isLoading()">
+	</div>
+
+	<div class="spinner" ng-show="app.appService.isLoading()">
+		<div class="sk-fading-circle">
+			<div class="sk-circle1 sk-circle"></div>
+			<div class="sk-circle2 sk-circle"></div>
+			<div class="sk-circle3 sk-circle"></div>
+			<div class="sk-circle4 sk-circle"></div>
+			<div class="sk-circle5 sk-circle"></div>
+			<div class="sk-circle6 sk-circle"></div>
+			<div class="sk-circle7 sk-circle"></div>
+			<div class="sk-circle8 sk-circle"></div>
+			<div class="sk-circle9 sk-circle"></div>
+			<div class="sk-circle10 sk-circle"></div>
+			<div class="sk-circle11 sk-circle"></div>
+			<div class="sk-circle12 sk-circle"></div>
+		</div>
+	</div>
+
+	<nav class="navbar navbar-default navbar-fixed-top">
+
+		<div class="container">
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-links" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" ng-click="app.home()">padifolio</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-links">
+
+				<ul class="nav navbar-nav" ng-if="app.sessionService.hasSession()">
+					<li ng-class="{ 'active': app.isHomeState() }"><a ui-sref="documents">Documents</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right" ng-if="app.sessionService.hasSession()">
+					<li class="dropdown">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi {{app.sessionService.getUserName()}}<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="" ng-click="app.logout()">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right" ng-if="!app.sessionService.hasSession()">
+					<li><a ng-click="app.login()">Login</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right" ng-if="app.sessionService.hasSession()">
+					<li class="dropdown">
+						<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Demo data<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="" ng-click="app.clearData()">Clear data</a></li>
+							<li><a href="" ng-click="app.genDemoData()">Generate demo data</a></li>
+						</ul>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+	</nav>
+
+	<ui-view></ui-view>
+
+</body>
+
+</html>

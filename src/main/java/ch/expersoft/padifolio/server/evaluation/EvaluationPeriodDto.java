@@ -1,11 +1,10 @@
 package ch.expersoft.padifolio.server.evaluation;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-public class EvaluationParamDto {
+public class EvaluationPeriodDto {
 
-	public LocalDate evalDate;
+	public String evalDate; // already in JSON format yyyy-MM-dd
 	public int dateType;
 	public BigDecimal twrStd;
 	public BigDecimal twrSpan;
