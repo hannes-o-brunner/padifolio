@@ -19,7 +19,7 @@ public class StaticContentHandler implements HttpHandler {
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 
-		String path = t.getRequestURI().getPath();
+		String path = t.getRequestURI().getPath().substring("/padifolio".length());
 		LOGGER.trace("Looking for: " + path);
 		InputStream inputStream = getClass().getResourceAsStream(path);
 
