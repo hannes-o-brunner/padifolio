@@ -8,7 +8,17 @@ A proof of concept for an AngularJS Web-UI talking to an Oracle PL/SQL based RES
 
 - Java JAX-RS implementation of API (JDBC to database) and Service (Rest via JAX-RS) layer
 
-- AngularJS based Web UI
+- AngularJS based Web UI (in `src/main/resources/webapp/padifolio`)
+
+
+## Build and Run
+
+Build the project with maven.
+
+This will generate an executable jar `target/padifolio.jar` which can be executed by either double click or with `java -jar target/padiofolio.jar` from the project root directory.
+
+The necessary libraries are under `target/lib`, they are not included in the executable jar due to problems with class loading / class path scanning.
+
 
 ## Database Setup
 
