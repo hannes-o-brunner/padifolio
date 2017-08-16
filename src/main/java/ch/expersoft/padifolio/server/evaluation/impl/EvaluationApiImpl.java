@@ -44,9 +44,10 @@ public class EvaluationApiImpl implements EvaluationApi {
 		"       ,flow_prev_date\n" +
 		"       ,profit_prev_date\n" +
 		"from    v_transeval_twr\n" +
-		"where   datetype in (0, 3, 4)\n" +
-		"  and   evaldate between to_date(?/*1*/, 'yyyy-mm-dd') and to_date(?/*2*/, 'yyyy-mm-dd')\n" +
-		"order by 1, 2";
+		"where   pf_id = ?/*1*/\n" +
+		"  and   datetype in (0, 3, 4)\n" +
+		"  and   evaldate between to_date(?/*2*/, 'yyyy-mm-dd') and to_date(?/*3*/, 'yyyy-mm-dd')\n" +
+		"order by evaldate, datetype";
 	// @formatter:on
 
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -89,8 +90,9 @@ public class EvaluationApiImpl implements EvaluationApi {
 		ResultSet resultSet = null;
 		try {
 			PreparedStatement selStmt = cp.getConnection().prepareStatement(CALC_SEL_STMT);
-			selStmt.setString(1, fromDate(fromDate));
-			selStmt.setString(2, fromDate(toDate));
+			selStmt.setInt(1, portfolioId);
+			selStmt.setString(2, fromDate(fromDate));
+			selStmt.setString(3, fromDate(toDate));
 			resultSet = selStmt.executeQuery();
 			while (resultSet.next()) {
 				EvaluationPeriodDto period = new EvaluationPeriodDto();

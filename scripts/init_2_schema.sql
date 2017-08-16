@@ -1,16 +1,22 @@
 
 connect transeval/padifolio;
 
+drop table v_transeval_twr cascade constraints;
+
 create table v_transeval_twr(
-	evaldate date,
-	datetype integer,
-	twr_std number,
-	twr_span number,
-	twr_prev_date number,
-	marketvalue number,
-	flow_prev_date number,
-	profit_prev_date number
+  pf_id             integer,
+	evaldate          date,
+	datetype          integer,
+	twr_std           number,
+	twr_span          number,
+	twr_prev_date     number,
+	marketvalue       number,
+	flow_prev_date    number,
+	profit_prev_date  number
 );
+
+create index v_transeval_twr#i#1 on v_transeval_twr(pf_id, evaldate);
+
 
 CREATE OR REPLACE PACKAGE TRANSEVAL IS
 
