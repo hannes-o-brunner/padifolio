@@ -20,8 +20,16 @@ function PortfolioEvaluationController(appService) {
 		title: {
 			text: "Market Value"
 		},
+		credits: {
+			text: 'Hannes Brunner',
+			href: 'http://www.hannes-brunner.ch:9001/index.html'
+		},
 		chart: {
-			type: "line"
+			type: "line",
+			style: {
+				fontFamily: '"Open Sans", sans-serif, Arial',
+				fontSize: '10px'
+			}
 		},
 		xAxis: {
 			categories: []
@@ -61,8 +69,16 @@ function PortfolioEvaluationController(appService) {
 		title: {
 			text: "Segmentation"
 		},
+		credits: {
+			text: 'Hannes Brunner',
+			href: 'http://www.hannes-brunner.ch:9001/index.html'
+		},
 		chart: {
-			type: "area"
+			type: "area",
+			style: {
+				fontFamily: '"Open Sans", sans-serif, Arial',
+				fontSize: '10px'
+			}
 		},
 		xAxis: {
 			categories: []
@@ -130,7 +146,7 @@ function PortfolioEvaluationController(appService) {
 		return chartConfig;
 	};
 
-	var attributionChartConfigObj = {
+	var contributionChartConfigObj = {
 		title: {
 			text: "Performance per Period"
 		},
@@ -150,7 +166,7 @@ function PortfolioEvaluationController(appService) {
 		},
 		lang: {
 			decimalPoint: '.',
-			thousandsSep: '\''
+			thousandsSep: "'"
 		},
 		xAxis: {
 			categories: [],
@@ -226,7 +242,7 @@ function PortfolioEvaluationController(appService) {
 	};
 
 	vm.contributionChartConfig = function() {
-		var chartConfig = attributionChartConfigObj;
+		var chartConfig = contributionChartConfigObj;
 		chartConfig.title.text = "Monthly Performance Contribution";
 		chartConfig.series.forEach(function(s) {
 			s.data = [];
