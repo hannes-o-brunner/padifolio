@@ -34,20 +34,36 @@ public class EvaluationApiImpl implements EvaluationApi {
 		"    i_to_date => to_date(?/*4*/, 'yyyy-mm-dd')\n" +
 		"  );\n" +
 		"end;";
-	private static final String CALC_SEL_STMT =
+	private static final String PERIOD_SEL_STMT =
+		"select *\n" +
+		"from (\n" +
 		"select  to_char(evaldate, 'yyyy-mm-dd')\n" +
+		"       ,null       segment_desc\n" +
 		"       ,datetype\n" +
 		"       ,twr_std\n" +
-		"       ,twr_span\n" +
 		"       ,twr_prev_date\n" +
 		"       ,marketvalue\n" +
 		"       ,flow_prev_date\n" +
 		"       ,profit_prev_date\n" +
 		"from    v_transeval_twr\n" +
 		"where   pf_id = ?/*1*/\n" +
-		"  and   datetype in (0, 3, 4)\n" +
 		"  and   evaldate between to_date(?/*2*/, 'yyyy-mm-dd') and to_date(?/*3*/, 'yyyy-mm-dd')\n" +
-		"order by evaldate, datetype";
+		"  and   datetype in (0, 3, 4)\n" +
+		"union all\n" +
+		"select  to_char(evaldate, 'yyyy-mm-dd')\n" +
+		"       ,segment_desc\n" +
+		"       ,datetype\n" +
+		"       ,twr_std\n" +
+		"       ,twr_prev_date\n" +
+		"       ,marketvalue\n" +
+		"       ,flow_prev_date\n" +
+		"       ,profit_prev_date\n" +
+		"from    v_transeval_bm\n" +
+		"where   pf_id = ?/*4*/\n" +
+		"  and   evaldate between to_date(?/*5*/, 'yyyy-mm-dd') and to_date(?/*6*/, 'yyyy-mm-dd')\n" +
+		"  and   datetype in (0, 3, 4)\n" +
+		")\n" +
+		"order by 1, 2 nulls first";
 	// @formatter:on
 
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -89,17 +105,20 @@ public class EvaluationApiImpl implements EvaluationApi {
 
 		ResultSet resultSet = null;
 		try {
-			PreparedStatement selStmt = cp.getConnection().prepareStatement(CALC_SEL_STMT);
+			PreparedStatement selStmt = cp.getConnection().prepareStatement(PERIOD_SEL_STMT);
 			selStmt.setInt(1, portfolioId);
 			selStmt.setString(2, fromDate(fromDate));
 			selStmt.setString(3, fromDate(toDate));
+			selStmt.setInt(4, portfolioId);
+			selStmt.setString(5, fromDate(fromDate));
+			selStmt.setString(6, fromDate(toDate));
 			resultSet = selStmt.executeQuery();
 			while (resultSet.next()) {
 				EvaluationPeriodDto period = new EvaluationPeriodDto();
 				period.evalDate = resultSet.getString(1);
-				period.dateType = resultSet.getInt(2);
-				period.twrStd = resultSet.getBigDecimal(3);
-				period.twrSpan = resultSet.getBigDecimal(4);
+				period.segment = resultSet.getString(2);
+				period.dateType = resultSet.getInt(3);
+				period.twrStd = resultSet.getBigDecimal(4);
 				period.twrPrevDate = resultSet.getBigDecimal(5);
 				period.marketValue = resultSet.getBigDecimal(6);
 				period.flowPrevDate = resultSet.getBigDecimal(7);
