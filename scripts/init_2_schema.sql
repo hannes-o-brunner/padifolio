@@ -9,7 +9,6 @@ create table v_transeval_twr(
 	evaldate          date,
 	datetype          integer,
 	twr_std           number,
-	twr_span          number,
 	twr_prev_date     number,
 	marketvalue       number,
 	flow_prev_date    number,
@@ -24,8 +23,8 @@ drop table v_transeval_bm cascade constraints;
 create table v_transeval_bm(
 	pf_id             integer,
 	evaldate          date,
-	datetype          integer,
 	segment_desc      varchar2(30),
+	datetype          integer,
 	twr_std           number,
 	twr_prev_date     number,
 	marketvalue       number,
@@ -33,7 +32,7 @@ create table v_transeval_bm(
 	profit_prev_date  number
 );
 
-create index v_transeval_bm#i#1 on v_transeval_bm(pf_id, evaldate, segment_code);
+create index v_transeval_bm#i#1 on v_transeval_bm(pf_id, evaldate, segment_desc);
 
 
 CREATE OR REPLACE PACKAGE TRANSEVAL IS
