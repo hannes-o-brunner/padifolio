@@ -21,7 +21,7 @@ function AppConfig($urlRouterProvider, $stateProvider) {
 
 	var portfolioState = {
 		name: "home.portfolio",
-		url: "/portfolio/{portfolioId:int}",
+		url: "^/portfolio/{portfolioId:int}",
 		component: "portfolioEvaluation",
 		resolve: {
 //			authentication: authentication,

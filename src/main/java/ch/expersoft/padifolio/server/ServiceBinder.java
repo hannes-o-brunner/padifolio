@@ -20,7 +20,9 @@ public class ServiceBinder implements Feature {
 	public boolean configure(FeatureContext context) {
 		LOGGER.info("Binding HK2 services ...");
 		ServiceLocator locator = ServiceLocatorProvider.getServiceLocator(context);
-		ServiceLocatorUtilities.addClasses(locator, PortfolioApiImpl.class, EvaluationApiImpl.class, ConnectionProviderImpl.class);
+		ServiceLocatorUtilities.addClasses(locator, PortfolioApiImpl.class);
+		ServiceLocatorUtilities.addClasses(locator, EvaluationApiImpl.class);
+		ServiceLocatorUtilities.addClasses(locator, ConnectionProviderImpl.class);
 		return true;
 	}
 

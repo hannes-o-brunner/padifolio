@@ -26,6 +26,10 @@ public class StaticContentHandler implements HttpHandler {
 	public void handle(HttpExchange t) throws IOException {
 
 		String path = pathPrefix + t.getRequestURI().getPath();
+		if (!path.matches(".*[.].*$")) {
+			path += (!path.endsWith("/") ? "/" : "") + "index.html";
+		}
+
 		LOGGER.info("Looking for: " + path);
 		InputStream inputStream = getClass().getResourceAsStream(path);
 
@@ -42,12 +46,14 @@ public class StaticContentHandler implements HttpHandler {
 			String mime = "text/html";
 			if (path.substring(path.length() - 3).equals(".js")) {
 				mime = "application/javascript";
-			} else if (path.substring(path.length() - 3).equals("css")) {
+			} else if (path.endsWith(".css")) {
 				mime = "text/css";
-			} else if (path.substring(path.length() - 3).equals("gif")) {
+			} else if (path.endsWith(".gif")) {
 				mime = "image/gif";
-			} else if (path.substring(path.length() - 3).equals("jpg")) {
+			} else if (path.endsWith(".jpg")) {
 				mime = "image/jpg";
+			} else if (path.endsWith(".png")) {
+				mime = "image/png";
 			}
 
 			Headers h = t.getResponseHeaders();
